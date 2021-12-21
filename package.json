@@ -21,9 +21,11 @@
   "devDependencies": {
     "parcel-bundler": "^1.12.5",
     "parcel-plugin-handlebars-precompile": "^1.0.2",
+    "parcel-plugin-handlebars-precompile-ts": "^1.0.0",
     "parcel-plugin-nuke-dist": "^1.0.1",
     "posthtml-include": "^1.6.2",
-    "sass": "^1.32.8"
+    "sass": "^1.32.8",
+    "typescript": "^4.5.4"
   },
   "dependencies": {
     "@vimeo/player": "^2.16.2",
