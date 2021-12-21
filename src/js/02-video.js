@@ -1,38 +1,36 @@
-
 // 1 Імпортуємо vimeo player з пакета
 import Player from '@vimeo/player';
+import throttle from 'lodash.throttle';
+
 //  2 Инициализируй плеер в файле скрипта (треба вказати айдішник з HTML)
 const player = new Player('vimeo-player');
-
-// Пробуємо чи працює
+// Перевірити чи працює:
 // player.on('play', function() {
 //     console.log('played the video!');
 // });
 
-// метод on() 
+// 3 Метод on() 
 // відстежуємо подію timeupdate обновлення часу запуску відео
+player.on('timeupdate',throttle(onTimeUpdate, 1000) );
 
-
-const callback = function(data) {
-    // console.log(data);
-    localStorage.setItem("videoplayer-current-time", JSON.stringify(data));
+function onTimeUpdate (data) {
+    console.log(data);
+    localStorage.setItem("videoplayer-current-time", JSON.stringify(data.seconds))
 }
-
-player.on('timeupdate', callback);
-
+// Забираємо в перемінну time значення з локального збереження
+// (це буде час з якого буде відновлюватись сеанс)
 const time = JSON.parse(localStorage.getItem("videoplayer-current-time"))
-console.log (time.seconds )
 
-player.setCurrentTime(time.seconds).then(function(seconds) {
-    // seconds = the actual time that the player seeked to
+// метод для відновлення відтворення відео із збереженої позиції
+player.setCurrentTime(time).then(function(seconds) {
 }).catch(function(error) {
     switch (error.name) {
         case 'RangeError':
-            // the time was less than 0 or greater than the video’s duration
             break;
-
         default:
-            // some other error occurred
             break;
     }
 });
+// КОМЕНТАР краще зберігати такі дані в sessionStorage 
+// бо при відкритті нової вкладки чи закритті браузера дані 
+// автоматично будуть зникати і їх не потрібно видаляти
